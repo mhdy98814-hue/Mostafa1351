@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرم درخواست آزمایش ژنتیک ورزشی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h2 {
+            color: #1d4ed8;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 5px rgba(29, 78, 216, 0.3);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-telegram {
+            background-color: #2563eb;
+            color: white;
+        }
+        .btn-telegram:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-copy {
+            background-color: #10b981;
+            color: white;
+        }
+        .btn-copy:hover {
+            background-color: #059669;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="header">
+            <h2>موسسه مهندسی ژنتیک ورزشی آسیا</h2>
+            <p>فرم ثبت اطلاعات متقاضیان</p>
+        </div>
+
+        <form id="geneticForm">
+            <div class="form-group">
+                <label>نام و نام خانوادگی:</label>
+                <input type="text" id="name" required placeholder="مثال: علی رضایی">
+            </div>
+            
+            <div class="form-group">
+                <label>کد ملی:</label>
+                <input type="number" id="nationalId" required>
+            </div>
+            
+            <div class="form-group">
+                <label>شماره تماس (ترجیحاً دارای پیام‌رسان):</label>
+                <input type="tel" id="phone" required placeholder="09123456789">
+            </div>
+
+            <div class="form-group">
+                <label>رشته ورزشی:</label>
+                <input type="text" id="sport" required placeholder="مثال: فوتبال، بدنسازی...">
+            </div>
+
+            <div class="form-group">
+                <label>هدف اصلی از آزمایش:</label>
+                <select id="goal">
+                    <option value="استعدادیابی و بررسی پتانسیل ژنتیکی">استعدادیابی و بررسی پتانسیل ژنتیکی</option>
+                    <option value="پیشگیری از آسیب‌های ورزشی">پیشگیری از آسیب‌های ورزشی</option>
+                    <option value="آنالیز پتانسیل‌های روانی و تمرکز">آنالیز پتانسیل‌های روانی و تمرکز</option>
+                    <option value="بهبود تغذیه و ریکاوری">بهبود تغذیه و ریکاوری</option>
+                </select>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-telegram" onclick="sendToTelegram()">ارسال به تلگرام</button>
+                <button type="button" class="btn-copy" onclick="copyData()">کپی برای ایتا/بله</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // آیدی تلگرام خود را اینجا جایگزین کنید (بدون @)
+        const myTelegramID = "Geneticform"; 
+
+        function generateMessage() {
+            const name = document.getElementById('name').value;
+            const nationalId = document.getElementById('nationalId').value;
+            const phone = document.getElementById('phone').value;
+            const sport = document.getElementById('sport').value;
+            const goal = document.getElementById('goal').value;
+
+            if(!name || !nationalId || !phone || !sport) {
+                alert("لطفاً تمام فیلدها را پر کنید.");
+                return null;
+            }
+
+            return `🧬 درخواست جدید آزمایش ژنتیک ورزشی\n\n👤 نام: ${name}\n💳 کد ملی: ${nationalId}\n📱 تماس: ${phone}\n🏃‍♂️ رشته ورزشی: ${sport}\n🎯 هدف: ${goal}\n\n📍 موسسه مهندسی ژنتیک ورزشی آسیا`;
+        }
+
+        function sendToTelegram() {
+            const msg = generateMessage();
+            if(msg) {
+                const encodedMsg = encodeURIComponent(msg);
+                window.open(`https://t.me/${myTelegramID}?text=${encodedMsg}`, '_blank');
+            }
+        }
+
+        function copyData() {
+            const msg = generateMessage();
+            if(msg) {
+                navigator.clipboard.writeText(msg).then(() => {
+                    alert("اطلاعات کپی شد! حالا می‌توانید در چت شخصی من در ایتا یا بله آن را Paste (جای‌گذاری) کنید.");
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
